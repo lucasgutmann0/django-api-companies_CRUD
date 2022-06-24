@@ -1,0 +1,57 @@
+#PASO 1 CREAR DockerFile
+# syntax=docker/dockerfile:1
+FROM python:3.9
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /mystore
+WORKDIR /mystore
+ADD requirements.txt /mystore/
+#RUN pip install -- upgrade pip && pip install -r requirements.txt
+RUN pip install -r requirements.txt
+ADD . /mystore/
+
+#PASO 2 CREAR docker-compose.yml
+version: '3.5'
+services:
+  portalinstalaciones-django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/mystore
+    ports:
+      - "80:8000"
+
+
+#PASO 3 CREAR PROYECTO
+sudo docker-compose run portalinstalaciones-django django-admin startproject portalservicios .
+sudo docker-compose run --rm portalinstalaciones-django django-admin startproject portalservicios .
+
+# Inicio proyecto
+sudo docker-compose run --rm portalinstalaciones-django python manage.py runserver
+#PASO  4 SUBIR 
+docker-compose up
+#SUBIR DOCKER Y QUE QUEDE EN SEGUNDO
+docker-compose up -d
+
+#SI AGREGO ALGO EN requirements.txt DEBO HACER UN BUILD
+docker-compose build
+
+#realizar migrations
+sudo docker-compose run --rm portalinstalaciones-django python manage.py makemigrations
+#realizar migrations
+sudo docker-compose run --rm portalinstalaciones-django python manage.py migrate
+#CREAR SUPER USUARIO
+sudo docker-compose run --rm portalinstalaciones-django python manage.py createsuperuser
+#CREAR APP
+sudo docker-compose run --rm portalinstalaciones-django python manage.py startapp webservices
+
+#EJECTUAR PRUEBAS DESDE EL ARCHIVO DE TESTS.PY PARA CADA APP
+sudo docker-compose run --rm portalinstalaciones-django python manage.py test app/erp
+
+#Ejecutar PRUEBAS DESDE EL ARCHIVO PRINCIPAL DE LAS APPs
+sudo docker-compose run --rm portalinstalaciones-django python manage.py test perfiles
+
+# PARA LIMPIAR TABLAS EN DB BOWSER LITE
+
+delete from apli_producto; 
+delete from sqlite_sequence where name='apli_producto';
+UPDATE SQLITE_SEQUENCE SET SEQ=1 WHERE NAME='apli_producto';

@@ -1,4 +1,5 @@
 # archivo de creacion de vistas, que tienen el formato de una clase en python
+from distutils.log import error
 import json
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -41,8 +42,9 @@ class CompanyView(View):
             # enviar la enformacion en formato json y retornarla
             if len(companies)>0:
                 datos={'message': "Success, here are the companies", 'companies': companies}
+            
             else:
-                datos={'message', "Companies not found..."} 
+                datos={'message': "Companies not found..."} 
             # en este return, se retorna el json de los datos obtenidos
             return JsonResponse(datos)
     
@@ -55,7 +57,7 @@ class CompanyView(View):
         json_data = json.loads(request.body) # el json.loads se usa para convertir una lista a json
         #print(json_data)
         # para crear un elemento para el post y ponerlo en la base de datos
-        Company.objects.create(name=json_data['name'],website=json_data['Website'],foundation=json_data['foundation'])
+        Company.objects.create(name=json_data['name'],website=json_data['website'],foundation=json_data['foundation'])
         datos={'message': "Success, the post has been done"}    
         return JsonResponse(datos)
     

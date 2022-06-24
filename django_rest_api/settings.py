@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_8qjr)(wtbh2f5&6y4k9qda(%08&1&fqz=-yd$x0^r4h^uab+t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -76,12 +76,8 @@ WSGI_APPLICATION = 'django_rest_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_api',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '3218'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'companies.db',
     }
 }
 

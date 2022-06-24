@@ -1,0 +1,16 @@
+#DJANGO
+Django==3.2.5
+#DJANGO REST-FRAMEWORK
+djangorestframework==3.12.4
+#MYSQL
+mysqlclient
+PyMySQL==1.0.2
+django-mysql==2.2.0
+#HISTORICO DE MODELOS
+django-simple-history==3.0.0
+# images
+Pillow
+# suds
+suds==1.0.0
+#request
+requests==2.2.0
